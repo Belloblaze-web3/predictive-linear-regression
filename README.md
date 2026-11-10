@@ -28,8 +28,13 @@ predictive-linear-regression/
 │   ├── __init__.py
 │   ├── data.py
 │   ├── evaluate.py
+│   ├── predict.py
 │   └── train.py
 ├── tests/test_pipeline.py
+├── tests/test_prediction.py
+├── app.py                       # Streamlit interactive prediction UI
+├── requirements-streamlit.txt
+├── Dockerfile
 ├── requirements.txt
 ├── pyproject.toml
 ├── README.md
@@ -48,6 +53,26 @@ source .venv/bin/activate
 pip install -r requirements.txt
 python -m predictive_regression.train
 pytest
+```
+
+## Run the interactive Streamlit app
+
+Install the app extra and launch the local web application:
+
+```bash
+pip install -e '.[app]'
+streamlit run app.py
+```
+
+Open the URL printed by Streamlit, enter vehicle specifications, and select **Predict fuel economy**. The app loads `models/ridge_pipeline.joblib` when available. If the artifact is absent—as it may be on a fresh deployment—the app trains the configured pipeline once from OpenML, caches the resulting model for the session, and then serves predictions.
+
+For Streamlit Community Cloud, set the repository to this project, use `app.py` as the main file, and use `requirements-streamlit.txt` as the dependency file. The deployment needs outbound access to OpenML only when the saved model artifact is not included.
+
+To run the same app in Docker:
+
+```bash
+docker build -t auto-mpg-predictor .
+docker run --rm -p 8501:8501 auto-mpg-predictor
 ```
 
 The training command downloads the dataset through scikit-learn/OpenML on the first run, trains the model, and writes:
