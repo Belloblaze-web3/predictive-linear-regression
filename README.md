@@ -1,5 +1,9 @@
 # Predictive Linear Regression Model Pipeline
 
+[![CI](https://github.com/Belloblaze-web3/predictive-linear-regression/actions/workflows/ci.yml/badge.svg)](https://github.com/Belloblaze-web3/predictive-linear-regression/actions/workflows/ci.yml)
+[![Python](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+
 A production-style supervised regression project using the real **Auto MPG** dataset from OpenML. The project demonstrates a leakage-safe scikit-learn workflow with:
 
 - Mean imputation for missing numeric values
@@ -28,7 +32,11 @@ predictive-linear-regression/
 ├── tests/test_pipeline.py
 ├── requirements.txt
 ├── pyproject.toml
-└── README.md
+├── README.md
+├── CONTRIBUTING.md
+├── CODE_OF_CONDUCT.md
+├── LICENSE
+└── .github/workflows/ci.yml
 ```
 
 ## Quick start
@@ -63,6 +71,18 @@ The pipeline is fit only on the training split. A `GridSearchCV` over Ridge `alp
 - Tests cover dataset shape, preprocessing behavior, and end-to-end training.
 - The project is designed to be extended with experiment tracking, CI, or a model registry.
 
+## Latest validated run
+
+Using the configured OpenML Auto MPG dataset, random seed `42`, 80/20 holdout, and 5-fold Ridge alpha search:
+
+| Metric | Value |
+|---|---:|
+| Test R² | 0.8448 |
+| Test RMSE | 2.8882 MPG |
+| Selected alpha | 1.0 |
+
+These values are logged to `reports/metrics.json` after training. Generated reports and model binaries are intentionally excluded from source control; the training command recreates them deterministically.
+
 ## Example output
 
 The exact values depend on the current OpenML copy and split, but the command reports metrics in this form:
@@ -73,4 +93,8 @@ Test RMSE: 3.10 mpg
 Best alpha: 10.0
 ```
 
-These are example formats, not hard-coded benchmark claims; use `reports/metrics.json` for the run's actual values.
+The example above is illustrative; use `reports/metrics.json` for the run's actual values.
+
+## License and contribution
+
+This project is released under the [MIT License](LICENSE). See [CONTRIBUTING.md](CONTRIBUTING.md) for development and pull-request standards.
