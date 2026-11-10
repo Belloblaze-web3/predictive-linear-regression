@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "predictive-linear-regression"
+version = "0.1.0"
+description = "Leakage-safe Ridge regression pipeline for Auto MPG prediction"
+requires-python = ">=3.10"
+dependencies = [
+  "joblib>=1.3",
+  "matplotlib>=3.7",
+  "numpy>=1.24",
+  "pandas>=2.0",
+  "PyYAML>=6.0",
+  "scikit-learn>=1.3",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=7.4"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]

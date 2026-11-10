@@ -1,0 +1,16 @@
+.venv/
+__pycache__/
+.pytest_cache/
+*.py[cod]
+.DS_Store
+
+# Generated runtime artifacts
+scikit_learn_data/
+data/
+models/
+reports/
+
+# Secrets and local configuration
+.env
+*.pem
+kaggle.json

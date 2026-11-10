@@ -1,0 +1,17 @@
+data:
+  openml_name: autoMpg
+  openml_version: 1
+  target: mpg
+  test_size: 0.2
+  random_state: 42
+
+model:
+  cv_folds: 5
+  scoring: neg_root_mean_squared_error
+  ridge_alphas: [0.01, 0.1, 1.0, 10.0, 100.0]
+
+artifacts:
+  model_path: models/ridge_pipeline.joblib
+  metrics_path: reports/metrics.json
+  predictions_path: reports/predictions.csv
+  plot_path: reports/residuals.png

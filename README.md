@@ -1,0 +1,76 @@
+# Predictive Linear Regression Model Pipeline
+
+A production-style supervised regression project using the real **Auto MPG** dataset from OpenML. The project demonstrates a leakage-safe scikit-learn workflow with:
+
+- Mean imputation for missing numeric values
+- Most-frequent imputation for missing categorical values
+- One-hot encoding for categorical features
+- Standard feature scaling
+- Ridge regression regularization
+- Reproducible train/test splitting
+- Cross-validated hyperparameter selection
+- Logged evaluation metrics: R² and RMSE
+- Saved model artifact and metrics JSON
+
+## Project layout
+
+```text
+predictive-linear-regression/
+├── configs/config.yaml
+├── data/                         # generated locally; ignored by git
+├── models/                       # generated model artifact; ignored by git
+├── reports/                      # generated metrics and plots; ignored by git
+├── src/predictive_regression/
+│   ├── __init__.py
+│   ├── data.py
+│   ├── evaluate.py
+│   └── train.py
+├── tests/test_pipeline.py
+├── requirements.txt
+├── pyproject.toml
+└── README.md
+```
+
+## Quick start
+
+```bash
+cd predictive-linear-regression
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+python -m predictive_regression.train
+pytest
+```
+
+The training command downloads the dataset through scikit-learn/OpenML on the first run, trains the model, and writes:
+
+- `models/ridge_pipeline.joblib` — complete preprocessing + estimator pipeline
+- `reports/metrics.json` — dataset summary, configuration, and test metrics
+- `reports/predictions.csv` — held-out predictions and residuals
+- `reports/residuals.png` — diagnostic plot
+
+## Modeling approach
+
+The target is `mpg` (miles per gallon). Numeric features include displacement, horsepower, weight, acceleration, model year, and cylinders. `origin` is treated as a categorical feature and one-hot encoded, ensuring the pipeline exercises categorical preprocessing on the real dataset.
+
+The pipeline is fit only on the training split. A `GridSearchCV` over Ridge `alpha` values selects regularization strength using 5-fold cross-validation and negative RMSE as the selection objective. Final performance is reported on a held-out test set that is never used during model selection.
+
+## Reproducibility and quality
+
+- Fixed random seed (`42`) for the train/test split and cross-validation.
+- `Pipeline` and `ColumnTransformer` prevent preprocessing leakage.
+- Type hints, logging, and explicit configuration are included.
+- Tests cover dataset shape, preprocessing behavior, and end-to-end training.
+- The project is designed to be extended with experiment tracking, CI, or a model registry.
+
+## Example output
+
+The exact values depend on the current OpenML copy and split, but the command reports metrics in this form:
+
+```text
+Test R²:   0.84
+Test RMSE: 3.10 mpg
+Best alpha: 10.0
+```
+
+These are example formats, not hard-coded benchmark claims; use `reports/metrics.json` for the run's actual values.
